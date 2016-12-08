@@ -1,0 +1,73 @@
+buildscript {
+	ext {
+		springBootVersion = '1.4.2.RELEASE'
+        assertjVersion = '3.6.1'
+        catchexceptionVersion = '1.4.4'		
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: "jacoco" 
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'vida-sushi'
+	version = '0.1.0'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+}
+
+// Integration test 
+	
+sourceSets {
+    integrationTest {
+        java {
+        	srcDir 'src/integrationtest/java'
+        }
+    }
+}
+
+dependencies {
+	integrationTestCompile sourceSets.main.output
+	integrationTestCompile sourceSets.test.output
+	integrationTestCompile configurations.testCompile
+	integrationTestRuntime configurations.testRuntime
+}
+
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+check.dependsOn integrationTest
+	
+// FIN Integration test 
+
+dependencies {
+	compileOnly('org.projectlombok:lombok')
+	
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.security.oauth:spring-security-oauth2')
+	compile('org.springframework.boot:spring-boot-configuration-processor')	
+	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+	compile('org.springframework.boot:spring-boot-starter-data-rest')
+	
+	compile("com.elipcero.springsecurity:elipcero-springsecurity:0.1.0")
+	
+    testCompile("org.assertj:assertj-core:${assertjVersion}")
+    testCompile("eu.codearte.catch-exception:catch-exception:${catchexceptionVersion}")	
+	
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
