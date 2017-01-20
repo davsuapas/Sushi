@@ -2,7 +2,10 @@ buildscript {
 	ext {
 		springBootVersion = '1.4.2.RELEASE'
         assertjVersion = '3.6.1'
-        catchexceptionVersion = '1.4.4'		
+        catchexceptionVersion = '1.4.4'
+        webjarsbootstrap = '3.3.7'
+        webjarsfontawesome = '4.7.0'
+        webjarsbootstrapsocial = '5.0.0'
 	}
 	repositories {
 		mavenCentral()
@@ -58,13 +61,18 @@ check.dependsOn integrationTest
 dependencies {
 	compileOnly('org.projectlombok:lombok')
 	
+	compile("org.webjars:bootstrap:${webjarsbootstrap}")
+	compile("org.webjars:font-awesome:${webjarsfontawesome}")
+	compile("org.webjars.bower:bootstrap-social:${webjarsbootstrapsocial}")
+	
+	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.security.oauth:spring-security-oauth2')
 	compile('org.springframework.boot:spring-boot-configuration-processor')	
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
 	
-	compile("com.elipcero.springsecurity:elipcero-springsecurity:0.1.0")
+	compile('com.elipcero.springsecurity:elipcero-springsecurity:0.1.0')
 	
     testCompile("org.assertj:assertj-core:${assertjVersion}")
     testCompile("eu.codearte.catch-exception:catch-exception:${catchexceptionVersion}")	
