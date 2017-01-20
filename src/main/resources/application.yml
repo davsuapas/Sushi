@@ -1,0 +1,20 @@
+spring:
+  data:
+    mongodb:
+      host: 172.17.0.2
+
+google:
+  client:
+    clientId: 88427942693-q5itu5rpbgr3nj6011ausv5rfta0aq63.apps.googleusercontent.com 
+    clientSecret: U1UrosJC3f8vWd78rdJbUdc2 
+    accessTokenUri: https://www.googleapis.com/oauth2/v4/token
+    userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth
+    clientAuthenticationScheme: query
+    scope: profile
+  resource:
+    userInfoUri: https://www.googleapis.com/plus/v1/people/me
+    preferTokenInfo: false
+    
+logging:
+  level:
+    org.springframework.security: DEBUG
