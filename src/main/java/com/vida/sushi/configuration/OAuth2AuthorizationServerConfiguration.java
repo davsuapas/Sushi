@@ -11,9 +11,12 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 import com.elipcero.springsecurity.oauth2.config.EnabledMongoDbToken;
+import com.vida.sushi.repositories.users.ProfileRepository;
+import com.vida.sushi.services.users.ProfileConfigurationService;
 
 /**
  * Configure oauth2 authentication server with implicit grand type and store tokens in mongodb
@@ -32,11 +35,15 @@ public class OAuth2AuthorizationServerConfiguration extends AuthorizationServerC
 	@Autowired
 	private TokenStore tokenStore;
 	
+	@Autowired
+    private ProfileRepository profileRepository;	
+	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints)	throws Exception {
 		endpoints
 			.authenticationManager(authenticationManager)
-			.tokenStore(tokenStore);
+			.tokenStore(tokenStore)
+			.tokenEnhancer(tokenEnhancer());
 	}	
 
 	@Override
@@ -54,6 +61,12 @@ public class OAuth2AuthorizationServerConfiguration extends AuthorizationServerC
 	public AuthorizationServerTokenServices tokenServices() {
 	    DefaultTokenServices tokenServices = new DefaultTokenServices();
 	    tokenServices.setTokenStore(tokenStore);
+	    tokenServices.setTokenEnhancer(tokenEnhancer());
 	    return tokenServices;
 	}
+	
+	@Bean
+	public TokenEnhancer tokenEnhancer() {
+		return new CustomTokenEnhancer(new ProfileConfigurationService(profileRepository));
+	}	
 }
