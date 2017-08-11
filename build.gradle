@@ -32,6 +32,7 @@ repositories {
 	mavenLocal()
 }
 
+
 // Integration test 
 	
 sourceSets {
@@ -55,8 +56,25 @@ task integrationTest(type: Test) {
 }
 
 check.dependsOn integrationTest
+integrationTest.testLogging.showStandardStreams = true
 	
 // FIN Integration test 
+
+// Location sources
+
+eclipse {
+    classpath {
+        file {
+            whenMerged { 
+                def lib = entries.find { it.path.contains 'elipcero-springdatarest-0.1.0.jar' }
+                lib.javadocPath = fileReference(file('build/libs/SpringDataRest-javadoc.jar'))
+                lib.sourcePath = fileReference(file('build/libs/SpringDataRest-sources.jar'))
+            }
+        }
+    }
+}
+
+// FIN Location sources
 
 dependencies {
 	compileOnly('org.projectlombok:lombok')
@@ -72,10 +90,15 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
 	
+	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+	
 	compile('com.elipcero.springsecurity:elipcero-springsecurity:0.1.0')
+	compile('com.elipcero.springdata:elipcero-springdata:0.1.0')
+	compile('com.elipcero.springdatarest:elipcero-springdatarest:0.1.0')
 	
     testCompile("org.assertj:assertj-core:${assertjVersion}")
     testCompile("eu.codearte.catch-exception:catch-exception:${catchexceptionVersion}")	
 	
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('com.elipcero.springtest:elipcero-springtest:0.1.0')
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -21,11 +22,12 @@ import com.vida.sushi.services.users.ProfileConfigurationService;
 /**
  * Configure oauth2 authentication server with implicit grand type and store tokens in mongodb
  * 
- * @author David Suárez Pascual
+ * @author dav.sua.pas@gmail.com
  */
 @Configuration
 @EnabledMongoDbToken
 @EnableAuthorizationServer
+@Profile("!integration-test")
 public class OAuth2AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 	
 	@Autowired
@@ -50,7 +52,7 @@ public class OAuth2AuthorizationServerConfiguration extends AuthorizationServerC
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients
 			.inMemory()
-			.withClient("mobile").authorizedGrantTypes("implicit", "client_credentials"/*test*/)
+			.withClient("mobile").authorizedGrantTypes("implicit")
 			.accessTokenValiditySeconds(0)
 			.autoApprove(true)
 			.scopes("user").resourceIds("mobile");
