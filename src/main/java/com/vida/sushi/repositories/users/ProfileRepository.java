@@ -2,16 +2,16 @@ package com.vida.sushi.repositories.users;
 
 import java.util.Optional;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-
-import com.vida.sushi.entities.users.Profile;
+import com.elipcero.springdata.repositories.mongo.MongoExtensionRepository;
+import com.vida.sushi.domains.users.Profile;
 
 /**
- * @author dsuarez
  * 
  * Repository for user profile
  *
+ *
+ * @author dav.sua.pas@gmail.com
  */
-public interface ProfileRepository extends MongoRepository<Profile, String> {
+public interface ProfileRepository extends MongoExtensionRepository<Profile, String> {
 	public Optional<Profile> findByProviderAndUserName(String provider, String UserName); 
 }

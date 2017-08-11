@@ -10,10 +10,10 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 
 import com.vida.sushi.services.users.ProfileConfigurationService;
 
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CustomTokenEnhancer implements TokenEnhancer {
 	
 	@NonNull private final ProfileConfigurationService profileService;

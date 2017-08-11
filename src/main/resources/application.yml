@@ -2,7 +2,18 @@ spring:
   data:
     mongodb:
       host: 172.17.0.2
+      database: sushi
+      
+---
 
+spring:
+    profiles: integration-test
+    data:
+      mongodb:
+        host: 172.17.0.2
+        database: test-sushi
+      
+    
 google:
   client:
     clientId: 88427942693-q5itu5rpbgr3nj6011ausv5rfta0aq63.apps.googleusercontent.com 
