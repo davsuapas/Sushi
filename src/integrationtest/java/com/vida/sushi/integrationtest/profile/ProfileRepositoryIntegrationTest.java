@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -20,10 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static com.elipcero.springtest.general.AssertUtil.jsonPathValue;
-
 import com.elipcero.springdatarest.webmvc.RepositoryRestMvcHeader;
-import com.elipcero.springtest.web.TestMediaTypes;
 import com.vida.sushi.domains.aquariums.Aquarium;
 import com.vida.sushi.domains.aquariums.Aquarium.AquariumType;
 import com.vida.sushi.domains.users.Profile;
@@ -52,19 +48,18 @@ public class ProfileRepositoryIntegrationTest extends MockMvcIntegrationTest {
 		
 		Profile profile = saveProfile();
 		Aquarium aquarium = profile.getAquariums().stream().findFirst().get();
-		
+	
 		mockMvc.perform(get("/profiles/{id}", profile.getId())
 				.headers(Util.getHeaderForMobileUserClientCredentials(mockMvc)))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(TestMediaTypes.HAL_JSON_UTF8))
                 .andExpect(jsonPath("$.userName", is(profile.getUserName())))
                 .andExpect(jsonPath("$.provider", is(profile.getProvider())))
                 .andExpect(jsonPath("$.defaultAquariumId", is(profile.getDefaultAquariumId())))
                 .andExpect(jsonPath("$.aquariums[0].id", is(aquarium.getId())))
                 .andExpect(jsonPath("$.aquariums[0].name", is(aquarium.getName())))
-                .andExpect(jsonPathValue("$.aquariums[0].capacity", aquarium.getCapacity()))
-                .andExpect(jsonPathValue("$.aquariums[0].deep", aquarium.getDeep()))
-                .andExpect(jsonPathValue("$.aquariums[0].high", aquarium.getHigh()))
+                .andExpect(jsonPath("$.aquariums[0].capacity", is((double)aquarium.getCapacity())))
+                .andExpect(jsonPath("$.aquariums[0].deep", is((double)aquarium.getDeep())))
+                .andExpect(jsonPath("$.aquariums[0].high", is((double)aquarium.getHigh())))
                 .andExpect(jsonPath("$.aquariums[0].type", is(aquarium.getType().toString())))
 				.andExpect(jsonPath("$.aquariums.length()", is(profile.getAquariums().size())));
 		
@@ -77,6 +72,7 @@ public class ProfileRepositoryIntegrationTest extends MockMvcIntegrationTest {
 		Profile profile = saveProfile();
 		
 		Profile profileForUpdating = Profile.builder()
+				.id(profile.getId())
 				.defaultAquariumId(ObjectId.get().toString()).build();
 			
 		mockMvc.perform(patch("/profiles/{id}/updatenonull", profile.getId())
@@ -97,11 +93,12 @@ public class ProfileRepositoryIntegrationTest extends MockMvcIntegrationTest {
 		
 		Profile profile = saveProfile();
 		
-		String aquariumIdForInsert = ObjectId.get().toString();
+		String aquariumIdForInserting = ObjectId.get().toString();
 		Profile aquariumForInserting = Profile.builder()
+				.id(profile.getId())
 				.aquariums(
 						Arrays.asList(Aquarium.builder()
-							.id(aquariumIdForInsert)
+							.id(aquariumIdForInserting)
 							.name(AQUARIUM_NAME)
 							.capacity(1)
 							.creationDate(LocalDateTime.now())
@@ -117,7 +114,7 @@ public class ProfileRepositoryIntegrationTest extends MockMvcIntegrationTest {
 		
 		Aquarium aquariumInserted = profileRepository.findOne(
 				profile.getId()).getAquariums().stream().filter(
-						a -> a.getId().equals(aquariumIdForInsert)).findFirst().get();
+						a -> a.getId().equals(aquariumIdForInserting)).findFirst().get();
 		
 		assertThat(aquariumInserted.getName()).isEqualTo(AQUARIUM_NAME);
 		
