@@ -44,14 +44,14 @@ public class WebSecurityConfiguration extends OAuth2SsoConfigurerAdapter {
 	private Filter ssoFilter() {
 		return ssoFilter(
 				Arrays.asList(
-						ssoFilter(github(), "/login/google")
+						ssoFilter(google(), "/login/google")
 				)
 		);
 	}
 	
 	@Bean
 	@ConfigurationProperties("google")
-	OAuth2ClientResources github() {
+	OAuth2ClientResources google() {
 		return new OAuth2ClientResources();
 	}
 }
