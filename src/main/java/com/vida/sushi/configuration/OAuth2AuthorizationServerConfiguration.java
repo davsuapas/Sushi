@@ -1,6 +1,10 @@
 package com.vida.sushi.configuration;
 
+import com.elipcero.springsecurity.oauth2.config.EnabledMongoDbToken;
+import com.vida.sushi.repositories.users.ProfileRepository;
+import com.vida.sushi.services.users.ProfileConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -14,10 +18,6 @@ import org.springframework.security.oauth2.provider.token.AuthorizationServerTok
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-
-import com.elipcero.springsecurity.oauth2.config.EnabledMongoDbToken;
-import com.vida.sushi.repositories.users.ProfileRepository;
-import com.vida.sushi.services.users.ProfileConfigurationService;
 
 /**
  * Configure oauth2 authentication server with implicit grand type and store tokens in mongodb
@@ -34,6 +34,7 @@ public class OAuth2AuthorizationServerConfiguration extends AuthorizationServerC
 	private AuthenticationManager authenticationManager;
 
 	// Inject MongoDbTokenStore by @EnabledMongoDbToken 
+	@Qualifier("mongoTokenStore")
 	@Autowired
 	private TokenStore tokenStore;
 	
@@ -41,7 +42,7 @@ public class OAuth2AuthorizationServerConfiguration extends AuthorizationServerC
     private ProfileRepository profileRepository;	
 	
 	@Override
-	public void configure(AuthorizationServerEndpointsConfigurer endpoints)	throws Exception {
+	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
 		endpoints
 			.authenticationManager(authenticationManager)
 			.tokenStore(tokenStore)

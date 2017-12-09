@@ -3,9 +3,6 @@ buildscript {
 		springBootVersion = '1.5.4.RELEASE'
         assertjVersion = '3.8.0'
         catchexceptionVersion = '1.4.4'
-        webjarsbootstrap = '3.3.7'
-        webjarsfontawesome = '4.7.0'
-        webjarsbootstrapsocial = '5.0.0'
 	}
 	repositories {
 		mavenCentral()
@@ -15,8 +12,8 @@ buildscript {
 	}
 }
 
-apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'java'
 apply plugin: "jacoco" 
 apply plugin: 'org.springframework.boot'
 
@@ -74,20 +71,17 @@ eclipse {
 
 dependencies {
 	compileOnly('org.projectlombok:lombok')
-	
-	compile("org.webjars:bootstrap:${webjarsbootstrap}")
-	compile("org.webjars:font-awesome:${webjarsfontawesome}")
-	compile("org.webjars.bower:bootstrap-social:${webjarsbootstrapsocial}")
-	
+
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-security')
-	compile('org.springframework.security.oauth:spring-security-oauth2')
-	compile('org.springframework.boot:spring-boot-configuration-processor')	
+	compile('org.springframework.security.oauth:spring-security-oauth2')	
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
 	
 	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
 	
+	compile('com.elipcero.springgeneral:elipcero-springgeneral:0.1.0')
 	compile('com.elipcero.springsecurity:elipcero-springsecurity:0.1.0')
 	compile('com.elipcero.springdata:elipcero-springdata:0.1.0')
 	compile('com.elipcero.springdatarest:elipcero-springdatarest:0.1.0')

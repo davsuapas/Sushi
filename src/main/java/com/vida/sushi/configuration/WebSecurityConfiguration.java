@@ -1,57 +1,70 @@
 package com.vida.sushi.configuration;
 
-import java.util.Arrays;
-
-import javax.servlet.Filter;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.elipcero.springsecurity.web.configuration.EnabledMongoDbUserDetails;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
-import com.elipcero.springsecurity.oauth2.config.OAuth2ClientResources;
-import com.elipcero.springsecurity.oauth2.config.OAuth2SsoConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.Assert;
 
 /**
  * Configure the authentication to protect /oauth/authorize, etc
- * The authentication is done across social network
- * 
+ * The authentication is done across form
+ *
  * <p>
  * Setting order equal to 6 to apply WebSecurityConfigurerAdapter before ResourceServerConfiguration
  * <p>
- * 
+ *
  * @author dav.sua.pas@gmail.com
  */
-@Order(6)  
+@Order(6)
 @Configuration
 @Profile("!integration-test")
-public class WebSecurityConfiguration extends OAuth2SsoConfigurerAdapter {
-	
+@EnabledMongoDbUserDetails
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
-		http.antMatcher("/**").authorizeRequests().antMatchers("/", "/login**", "/webjars/**").permitAll()
-				.anyRequest()
-				.authenticated().and().exceptionHandling()
-				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/")).and()
-				.addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
+
+		http
+			.authorizeRequests()
+			    .antMatchers("/login*", "/registration*", "/register").anonymous()
+			    .anyRequest().authenticated()
+			.and()
+			.formLogin()
+			    .loginPage("/login.html")
+                .loginProcessingUrl("/loginProcess")
+			    .failureUrl("/login.html?error=true")
+		    .and()
+            .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("auth_code", "JSESSIONID");
 	}
-	 
-	private Filter ssoFilter() {
-		return ssoFilter(
-				Arrays.asList(
-						ssoFilter(google(), "/login/google")
-				)
-		);
-	}
-	
-	@Bean
-	@ConfigurationProperties("google")
-	OAuth2ClientResources google() {
-		return new OAuth2ClientResources();
-	}
+
+    @Autowired
+    private UserDetailsService mongoDbUserDetails;
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authProvider() {
+        Assert.notNull(mongoDbUserDetails, "WebSecurityConfiguration: Mongo user details cannot be null");
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(mongoDbUserDetails);
+        authProvider.setPasswordEncoder(encoder());
+        return authProvider;
+    }
 }

@@ -10,6 +10,7 @@
 .settings
 .classpath
 .project
+.idea
 
 # Gradle files #
 .gradle

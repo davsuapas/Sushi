@@ -1,9 +1,8 @@
 package com.vida.sushi.configuration;
 
+import com.elipcero.springdata.repositories.mongo.MongoExtendedFactoryBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-
-import com.elipcero.springdata.repositories.mongo.MongoExtendedFactoryBean;
 
 /**
  * Configure base packages for mongo repositories and custom extension
@@ -12,7 +11,7 @@ import com.elipcero.springdata.repositories.mongo.MongoExtendedFactoryBean;
  */
 @Configuration
 @EnableMongoRepositories(
-	basePackages = "com.vida.sushi.repositories",
+	basePackages = {"com.vida.sushi.repositories", "com.vida.sushi.authentication.web"},
 	repositoryFactoryBeanClass = MongoExtendedFactoryBean.class
 )
 public class DataConfiguration {

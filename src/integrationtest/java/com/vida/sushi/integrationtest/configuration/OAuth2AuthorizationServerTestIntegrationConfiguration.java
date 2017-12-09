@@ -23,12 +23,12 @@ public class OAuth2AuthorizationServerTestIntegrationConfiguration extends Autho
 	
 	// Remove http basic authentication
 	@Override
-	public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+	public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
 		oauthServer.allowFormAuthenticationForClients();
 	}	
 	
 	@Override
-	public void configure(AuthorizationServerEndpointsConfigurer endpoints)	throws Exception {
+	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
 		endpoints.authenticationManager(authenticationManager);
 	}	
 

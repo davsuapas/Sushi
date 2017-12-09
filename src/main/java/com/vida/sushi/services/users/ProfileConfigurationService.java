@@ -1,15 +1,12 @@
 package com.vida.sushi.services.users;
 
-import java.util.Optional;
-
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-
 import com.vida.sushi.domains.users.Profile;
 import com.vida.sushi.repositories.users.ProfileRepository;
-
-import lombok.RequiredArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+
+import java.util.Optional;
 
 
 /**
@@ -22,26 +19,8 @@ public class ProfileConfigurationService {
 	
 	@NonNull private final ProfileRepository profileRepository;
 
-	public Profile configure(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
-		
-		String userAuthenticationClientId = ((OAuth2Authentication)authentication.getUserAuthentication()).getOAuth2Request().getClientId();
-				
-		Optional<Profile> profile =
-				this.profileRepository.findByProviderAndUserName(
-						userAuthenticationClientId, 
-						authentication.getName());
-		
-		if (!profile.isPresent()) {
-			
-			return profileRepository.save(
-					new Profile(
-						userAuthenticationClientId,	
-						authentication.getName()
-					)
-			);
-		}
-		else {
-			return profile.get();
-		}
+	public Profile configure(OAuth2Authentication authentication) {
+		Optional<Profile> profile =	this.profileRepository.findByUserName(authentication.getName());
+        return profile.orElseGet(() -> profileRepository.save(new Profile(authentication.getName())));
 	}
 }

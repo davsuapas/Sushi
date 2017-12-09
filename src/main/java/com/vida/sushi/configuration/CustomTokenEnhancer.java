@@ -1,20 +1,21 @@
 package com.vida.sushi.configuration;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.vida.sushi.services.users.ProfileConfigurationService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 
-import com.vida.sushi.services.users.ProfileConfigurationService;
+import java.util.HashMap;
+import java.util.Map;
 
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
+/**
+ * Creating profile from user auth and set the response with profile identifier
+ */
 @RequiredArgsConstructor
-public class CustomTokenEnhancer implements TokenEnhancer {
+class CustomTokenEnhancer implements TokenEnhancer {
 	
 	@NonNull private final ProfileConfigurationService profileService;
 	
@@ -23,7 +24,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
     	        
         final Map<String, Object> additionalInfo = new HashMap<>();
         
-        additionalInfo.put("profile", this.profileService.configure(accessToken, authentication).getId());
+        additionalInfo.put("profile", this.profileService.configure(authentication).getId());
 
         ((DefaultOAuth2AccessToken)accessToken).setAdditionalInformation(additionalInfo);
 
