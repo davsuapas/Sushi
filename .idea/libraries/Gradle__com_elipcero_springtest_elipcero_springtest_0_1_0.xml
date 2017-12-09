@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: com.elipcero.springtest:elipcero-springtest:0.1.0">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/elipcero/springtest/elipcero-springtest/0.1.0/elipcero-springtest-0.1.0.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

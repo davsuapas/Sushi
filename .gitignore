@@ -10,7 +10,12 @@
 .settings
 .classpath
 .project
+
+### IntelliJ IDEA ###
 .idea
+*.iws
+*.iml
+*.ipr
 
 # Gradle files #
 .gradle
