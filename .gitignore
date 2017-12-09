@@ -19,9 +19,11 @@
 
 # Gradle files #
 .gradle
+gradle
 build
 
 target
+out
 logs
 data
 /bin/
