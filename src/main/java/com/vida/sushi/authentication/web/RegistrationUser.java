@@ -1,12 +1,10 @@
 package com.vida.sushi.authentication.web;
 
-import javax.validation.constraints.NotNull;
-
+import com.elipcero.springgeneral.validations.ValidEmail;
+import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.elipcero.springgeneral.validations.ValidEmail;
-
-import lombok.Data;
+import javax.validation.constraints.NotNull;
 
 /**
  * Registration user entity. Validate password matches and email
@@ -24,6 +22,7 @@ class RegistrationUser {
 	
 	@NotNull
 	@NotEmpty
+    @ValidPassword
 	private String password;
 
 	private String matchingPassword;
