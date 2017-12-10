@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script type="text/javascript">
+    function loaded() {
+        var formLogout = document.getElementById("formLogout");
+        formLogout.submit();
+    }
+</script>
+<body onload="loaded()">
+<h1 th:text="#{auth.logout.message}"></h1>
+<form id="formLogout" action="/logout" method="POST">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+</form>
+</body>
+</html>

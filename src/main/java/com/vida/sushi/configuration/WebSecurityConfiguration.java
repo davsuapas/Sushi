@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.Assert;
 
 /**
@@ -36,7 +35,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		http
 			.authorizeRequests()
-			    .antMatchers("/login*", "/registration*", "/register").anonymous()
+			    .antMatchers("/login*", "/registration", "/register", "/callback").anonymous()
 			    .anyRequest().authenticated()
 			.and()
 			.formLogin()
@@ -45,7 +44,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			    .failureUrl("/login.html?error=true")
 		    .and()
             .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/callback")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .deleteCookies("auth_code", "JSESSIONID");
