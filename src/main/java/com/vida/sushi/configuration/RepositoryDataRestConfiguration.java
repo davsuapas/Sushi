@@ -1,16 +1,15 @@
 package com.vida.sushi.configuration;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
-import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
-import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
-
 import com.elipcero.springdatarest.webmvc.EnabledRepositoryExtensionRestMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.vida.sushi.domains.aquariums.Aquarium;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
 @Configuration
 @EnabledRepositoryExtensionRestMvc
@@ -23,7 +22,9 @@ public class RepositoryDataRestConfiguration {
 			
 			@Override
 			public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-				config.exposeIdsFor(Aquarium.class);
+				config
+                        .setBasePath("/api")
+                        .exposeIdsFor(Aquarium.class);
 			}
 			
 			@Override

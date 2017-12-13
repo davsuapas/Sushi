@@ -13,7 +13,7 @@ public class WebConfigurerAdapter extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
         super.addViewControllers(registry);
 
-        registry.addViewController("/login.html");
-        registry.addViewController("/autologout.html");
+        registry.addViewController("/login/login.html");
+        registry.addViewController("/login/autologout.html");
     }
 }

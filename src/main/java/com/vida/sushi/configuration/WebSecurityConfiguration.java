@@ -19,12 +19,13 @@ import org.springframework.util.Assert;
  * The authentication is done across form
  *
  * <p>
- * Setting order equal to 6 to apply WebSecurityConfigurerAdapter before ResourceServerConfiguration
+ * Setting order equal to -1 to apply WebSecurityConfigurerAdapter
+ * before ResourceServerConfiguration. ResourceServerConfiguration has order equal 3
  * <p>
  *
  * @author dav.sua.pas@gmail.com
  */
-@Order(6)
+@Order(-1)
 @Configuration
 @Profile("!integration-test")
 @EnabledMongoDbUserDetails
@@ -32,19 +33,21 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
 		http
-			.authorizeRequests()
-			    .antMatchers("/login*", "/registration", "/register", "/callback").anonymous()
-			    .anyRequest().authenticated()
-			.and()
+			.requestMatchers() // Only requests login matching are handled by this security configurer
+			    .antMatchers("/login/**", "/logout", "/oauth/**")
+            .and()
+            .authorizeRequests()
+                .antMatchers("/login/login*", "/login/regis*", "/login/logout/callback").permitAll()
+                .anyRequest().authenticated()
+            .and()
 			.formLogin()
-			    .loginPage("/login.html")
-                .loginProcessingUrl("/loginProcess")
-			    .failureUrl("/login.html?error=true")
+			    .loginPage("/login/login.html")
+                .loginProcessingUrl("/login/loginProcess")
+			    .failureUrl("/login/login.html?error=true")
 		    .and()
             .logout()
-                .logoutSuccessUrl("/callback")
+                .logoutSuccessUrl("/login/logout/callback")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .deleteCookies("auth_code", "JSESSIONID");

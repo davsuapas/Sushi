@@ -1,1 +1,5 @@
 http://localhost:8080//oauth/authorize?client_id=mobile&redirect_uri=http://localhost/callback&response_type=token
+
+http://localhost/callback#access_token=48d8ef2f-1ad1-4661-98c7-62df65ff10b0&token_type=bearer&scope=user&profile=5a30fcc8e7042e2725d6b786
+
+curl -H "Authorization: Bearer 48d8ef2f-1ad1-4661-98c7-62df65ff10b0" http://localhost:8080/api/profiles/5a30fcc8e7042e2725d6b786

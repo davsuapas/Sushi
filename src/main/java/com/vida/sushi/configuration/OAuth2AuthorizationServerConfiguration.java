@@ -57,9 +57,9 @@ public class OAuth2AuthorizationServerConfiguration extends AuthorizationServerC
 			.accessTokenValiditySeconds(0)
 			.autoApprove(true)
 			.scopes("user").resourceIds("mobile");
-	} 
-	 
-	@Bean
+	}
+
+    @Bean
 	@Primary
 	public AuthorizationServerTokenServices tokenServices() {
 	    DefaultTokenServices tokenServices = new DefaultTokenServices();

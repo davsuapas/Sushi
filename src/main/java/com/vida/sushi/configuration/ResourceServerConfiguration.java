@@ -23,8 +23,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()
 		.requestMatcher(new OrRequestMatcher(
-                new AntPathRequestMatcher("/logout"),
-				new AntPathRequestMatcher("/profiles/**")
+				new AntPathRequestMatcher("/api/**")
 			)
 		)
 		.authorizeRequests()

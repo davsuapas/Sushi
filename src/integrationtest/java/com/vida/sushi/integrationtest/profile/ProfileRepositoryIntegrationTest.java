@@ -38,7 +38,7 @@ public class ProfileRepositoryIntegrationTest extends MockMvcIntegrationTest {
 
 	@Test
 	public void authentication_GetProfileById_ShouldReturnErrorUnauthorized() throws Exception {
-		mockMvc.perform(get("/profiles/{id}", 1))
+		mockMvc.perform(get("/api/profiles/{id}", 1))
 				.andExpect(status().isUnauthorized());
 	}
 
@@ -48,7 +48,7 @@ public class ProfileRepositoryIntegrationTest extends MockMvcIntegrationTest {
 		Profile profile = saveProfile();
 		Aquarium aquarium = profile.getAquariums().stream().findFirst().get();
 
-		mockMvc.perform(get("/profiles/{id}", profile.getId())
+		mockMvc.perform(get("/api/profiles/{id}", profile.getId())
 				.headers(Util.getHeaderForMobileUserClientCredentials(mockMvc)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userName", is(profile.getUserName())))
@@ -73,7 +73,7 @@ public class ProfileRepositoryIntegrationTest extends MockMvcIntegrationTest {
 				.id(profile.getId())
 				.defaultAquariumId(ObjectId.get().toString()).build();
 
-		mockMvc.perform(patch("/profiles/{id}/updatenonull", profile.getId())
+		mockMvc.perform(patch("/api/profiles/{id}/updatenonull", profile.getId())
 				.content(mapper.writeValueAsString(profileForUpdating))
 				.headers(Util.getHeaderForMobileUserClientCredentials(mockMvc))
 				.header(RepositoryRestMvcHeader.updateNoMerge, ""))
@@ -104,7 +104,7 @@ public class ProfileRepositoryIntegrationTest extends MockMvcIntegrationTest {
 							.high(1)
 							.type(AquariumType.saltWater).build())).build();
 
-		mockMvc.perform(patch("/profiles/{id}/mergeembedded/aquariums", profile.getId())
+		mockMvc.perform(patch("/api/profiles/{id}/mergeembedded/aquariums", profile.getId())
 				.content(mapper.writeValueAsString(aquariumForInserting))
 				.headers(Util.getHeaderForMobileUserClientCredentials(mockMvc))
 				.header(RepositoryRestMvcHeader.updateNoMerge, ""))
@@ -127,7 +127,7 @@ public class ProfileRepositoryIntegrationTest extends MockMvcIntegrationTest {
 		Profile profile = saveProfile();
 		profile.getAquariums().stream().findFirst().get().setName(nameAquariumUpdated);
 
-		mockMvc.perform(patch("/profiles/{id}/mergeembedded/aquariums", profile.getId())
+		mockMvc.perform(patch("/api/profiles/{id}/mergeembedded/aquariums", profile.getId())
 				.content(mapper.writeValueAsString(profile))
 				.headers(Util.getHeaderForMobileUserClientCredentials(mockMvc))
 				.header(RepositoryRestMvcHeader.updateNoMerge, ""))
