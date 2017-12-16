@@ -1,5 +1,7 @@
 http://localhost:8080//oauth/authorize?client_id=mobile&redirect_uri=http://localhost/callback&response_type=token
 
-http://localhost/callback#access_token=48d8ef2f-1ad1-4661-98c7-62df65ff10b0&token_type=bearer&scope=user&profile=5a30fcc8e7042e2725d6b786
+http://localhost/callback#access_token=05041f02-5afb-4663-b42a-bc7e6ba49229&token_type=bearer&scope=user&profile=5a310ee4ac39ce39ed613f3c
 
-curl -H "Authorization: Bearer 48d8ef2f-1ad1-4661-98c7-62df65ff10b0" http://localhost:8080/api/profiles/5a30fcc8e7042e2725d6b786
+curl -H "Authorization: Bearer 05041f02-5afb-4663-b42a-bc7e6ba49229" http://localhost:8080/api/profiles/5a310ee4ac39ce39ed613f3c
+
+curl -H "Authorization: Bearer 5f68a49b-b5e3-4644-8ca3-9cf4d7256d0" -H "Content-Type: application/json" -d '{"defaultAquariumId":"a", "userName":"a"}' -X POST http://localhost:8080/api/profiles

@@ -25,7 +25,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @Controller()
 @RequestMapping(value="/login")
-@Profile("!integration-test")
+@Profile("production")
 public class RegistrationController {
 
 	private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);

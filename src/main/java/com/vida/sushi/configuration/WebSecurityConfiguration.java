@@ -27,7 +27,7 @@ import org.springframework.util.Assert;
  */
 @Order(-1)
 @Configuration
-@Profile("!integration-test")
+@Profile("production")
 @EnabledMongoDbUserDetails
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 

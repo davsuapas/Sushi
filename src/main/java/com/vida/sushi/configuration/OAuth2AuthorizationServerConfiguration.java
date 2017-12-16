@@ -27,7 +27,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 @Configuration
 @EnabledMongoDbToken
 @EnableAuthorizationServer
-@Profile("!integration-test")
+@Profile("production")
 public class OAuth2AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 	
 	@Autowired

@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,6 +30,7 @@ public class Profile {
 	
 	public Profile(String userName) {
 		this.userName = userName;
+		this.aquariums = Collections.emptyList();
 	}
 	
 	@Id

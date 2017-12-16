@@ -5,6 +5,8 @@ spring:
       database: sushi
   messages:
     basename: locale/messages
+  profiles:
+    active: production
 
 logging:
   level:
@@ -13,7 +15,7 @@ logging:
 ---
 
 spring:
-    profiles: integration-test
+    profiles: integration-test, mobile-integration-test
     data:
       mongodb:
         host: 172.17.0.2
