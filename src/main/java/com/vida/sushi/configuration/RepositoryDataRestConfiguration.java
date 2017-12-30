@@ -11,6 +11,11 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
+/**
+ * Configure path base and jackson module for data rest
+ *
+ * @author dav.sua.pas@gmail.com
+ */
 @Configuration
 @EnabledRepositoryExtensionRestMvc
 public class RepositoryDataRestConfiguration {

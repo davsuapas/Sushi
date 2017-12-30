@@ -1,16 +1,15 @@
 package com.vida.sushi.domains.aquariums;
 
-import java.time.LocalDateTime;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 /**
  * Aquarium domain. This domain is embedded into profile,
@@ -24,7 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @TypeAlias("aqm")
-@Document
+@Document()
 public class Aquarium {
 
 	@Id

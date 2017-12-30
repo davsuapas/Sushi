@@ -1,6 +1,7 @@
 package com.vida.sushi.configuration;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -27,6 +28,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 			)
 		)
 		.authorizeRequests()
+        .mvcMatchers(HttpMethod.GET,"/api/profiles", "/api/profiles/").denyAll()
+        .mvcMatchers(HttpMethod.POST,"/api/profiles", "/api/profiles/").denyAll()
+        .mvcMatchers(HttpMethod.PUT,"/api/profiles/*").denyAll()
+        .mvcMatchers(HttpMethod.DELETE,"/api/profiles/*").denyAll()
+        .mvcMatchers(HttpMethod.PATCH,"/api/profiles/*").denyAll()
 		.anyRequest().access("#oauth2.hasScope('user')");
 	}
 	

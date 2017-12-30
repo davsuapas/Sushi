@@ -21,8 +21,7 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,7 +41,21 @@ public class ProfileRepositoryIntegrationTest extends MockMvcIntegrationTest {
 				.andExpect(status().isUnauthorized());
 	}
 
-	@Test
+    @Test
+    public void authentication_PostProfile_ShouldReturnErrorAccessDenied() throws Exception {
+        mockMvc.perform(post("/api/profiles")
+                .headers(Util.getHeaderForMobileUserClientCredentials(mockMvc)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void authentication_GerAllProfiles_ShouldReturnErrorAccessDenied() throws Exception {
+        mockMvc.perform(get("/api/profiles")
+                .headers(Util.getHeaderForMobileUserClientCredentials(mockMvc)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
 	public void profile_GetProfileById_ShouldReturnProfileAndAquarium() throws Exception {
 
 		Profile profile = saveProfile();
