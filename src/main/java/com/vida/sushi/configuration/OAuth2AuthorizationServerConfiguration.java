@@ -2,6 +2,7 @@ package com.vida.sushi.configuration;
 
 import com.vida.sushi.authentication.web.UserService;
 import com.vida.sushi.services.users.ProfileConfigurationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -21,6 +22,8 @@ import java.util.Map;
  *
  * @author dav.sua.pas@gmail.com
  */
+
+@Slf4j
 @Configuration
 @EnableAuthorizationServer
 @Profile("production")
@@ -48,6 +51,9 @@ public class OAuth2AuthorizationServerConfiguration extends OAuth2ServerConfigur
         return new CustomJwtAccessTokenConverter(profileService, userService);
     }
 
+    /**
+     * Adding the profileid to the token
+     */
     public static class CustomJwtAccessTokenConverter extends JwtAccessTokenConverter {
 
         private final ProfileConfigurationService profileService;
@@ -60,8 +66,10 @@ public class OAuth2AuthorizationServerConfiguration extends OAuth2ServerConfigur
 
         @Override
         public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+            String profileId = profileService.configure(authentication).getId();
+            log.debug("CustomJwtAccessTokenConverter. Name: {}, ProfileId: {}, Token: {}", authentication.getName(), profileId, accessToken.getValue());
             Map<String, Object> info = new LinkedHashMap<>();
-            info.put("profile", profileService.configure(authentication).getId());
+            info.put("profile", profileId);
             ((DefaultOAuth2AccessToken)accessToken).setAdditionalInformation(info);
             userService.updateToken(authentication.getName(), accessToken.getValue());
 

@@ -3,8 +3,7 @@ package com.vida.sushi.authentication.web;
 import com.elipcero.springsecurity.web.MongoDbUserDetails;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -22,14 +21,13 @@ import javax.validation.Valid;
  *
  * @author dav.sua.pas@gmail.com
  */
+@Slf4j
 @RequiredArgsConstructor
 @Controller()
 @RequestMapping(value="/login")
 @Profile("production")
 public class RegistrationController {
 
-	private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);
-	
 	private @NonNull RegistrationRepository repository;
     private @NonNull PasswordEncoder passwordEncoder;
 		
@@ -50,13 +48,15 @@ public class RegistrationController {
 		else {
 			try {
 				if (this.exists(user)) {
+				    log.debug("Email duplicated: {}", user.getEmail());
 					bindingResult.rejectValue("email", "auth.reg.form.emailDuplicated");
 					error = true;
 				} else {
+                    log.debug("Saving user: {}", user.getEmail());
 					this.save(user);
 				}
 			} catch (Exception ex) {
-				logger.error(ex.getMessage());
+				log.error(ex.getMessage());
 				bindingResult.reject("auth.reg.form.generalError");
 				error = true;
 			}
