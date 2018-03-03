@@ -7,4 +7,4 @@ Sample Spring Oauth (JWT), Spring Data Rest
 - Spring Integration Test
 - Spring Profile
 
-https://github.com/davsuapas/ElipceroSpringCore
+It is also necessary: https://github.com/davsuapas/ElipceroSpringCore
